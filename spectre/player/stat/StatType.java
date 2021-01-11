@@ -1,0 +1,32 @@
+package com.sndy.spectre.player.stat;
+
+public enum StatType {
+
+    DAMAGE_ALL,
+    DAMAGE_FLAME,
+    DAMAGE_FROST,
+    DAMAGE_BLEED,
+    DAMAGE_STEAL,
+    DAMAGE_ULTIMATE,
+
+    DEFENSE_ALL,
+    DEFENSE_FIRE,
+    DEFENSE_ICE,
+    DEFENSE_BLEED,
+    DEFENSE_GILDED,
+    DEFENSE_ULTIMATE,
+
+    SKILL_WISDOM,
+    SKILL_STRENGTH,
+    SKILL_AGILITY,
+
+    STAT_HEALTH,
+    STAT_MANA,
+    
+    REQUIREMENT_WISDOM,
+    REQUIREMENT_STRENGTH,
+    REQUIREMENT_AGILITY,
+
+    INVALID
+
+}
