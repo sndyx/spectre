@@ -3,8 +3,10 @@ package com.sndy.spectre.player.interaction;
 import com.sndy.spectre.event.MobRegistry;
 import com.sndy.spectre.player.NetworkPlayerHandler;
 import com.sndy.spectre.player.stat.Stat;
+import com.sndy.spectre.player.stat.StatBuilder;
 import com.sndy.spectre.player.stat.StatList;
 import com.sndy.spectre.player.stat.StatType;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,7 +27,7 @@ public class InteractionManager implements Listener {
             LivingEntity damaged = (LivingEntity)event.getEntity();
             DamageMeta meta = calculateDamage(damager, damaged, event);
             event.setDamage(meta.heartsDealt);
-            damager.setHealth(damager.getHealth() + meta.heartsStolen);
+            damager.setHealth(meta.heartsStolen > damager.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue() ? damager.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue() : meta.heartsStolen);
             damaged.setAbsorptionAmount(damaged.getAbsorptionAmount() + meta.heartsGilded);
             if(meta.isBleeding){
                 damaged.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 5, 1));
@@ -135,9 +137,9 @@ public class InteractionManager implements Listener {
     }
 
     public void updatePlayer(Player player){
-        StatList stats = Stat.parseItem(player.getInventory().getItemInMainHand());
+        StatList stats = StatBuilder.fromLore(player.getInventory().getItemInMainHand());
         for(ItemStack item : player.getInventory().getArmorContents()){
-            stats.merge(Stat.parseItem(item));
+            stats.merge(StatBuilder.fromLore(item));
         }
         NetworkPlayerHandler.getPlayer(player.getUniqueId()).stats = stats;
     }

@@ -3,9 +3,15 @@ package com.sndy.spectre.event.sets;
 import com.sndy.spectre.event.SetBase;
 import com.sndy.spectre.event.events.RightClickEvent;
 import com.sndy.spectre.main.Spectre;
+import com.sndy.spectre.player.stat.Rarity;
+import com.sndy.spectre.player.stat.StatBuilder;
+import com.sndy.spectre.player.stat.StatType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;

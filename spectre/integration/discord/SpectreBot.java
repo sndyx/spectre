@@ -13,7 +13,7 @@ public class SpectreBot {
     public static JDA bot;
 
     public static void initBot() throws LoginException {
-        bot = JDABuilder.createDefault("BOT_TOKEN").build();
+        bot = JDABuilder.createDefault("Nzk1ODI1MzM3MDUzMDg1Njk3.X_PAGg.gQ1ZaDOgX1WNlAF0EbdVoGUd_ZU").build();
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         bot.getPresence().setActivity(Activity.watching("over the server!"));
         bot.addEventListener(new Console());

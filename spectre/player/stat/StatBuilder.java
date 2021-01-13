@@ -1,5 +1,14 @@
 package com.sndy.spectre.player.stat;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
 /**
  * @author Sandy
  *
@@ -55,8 +64,151 @@ public class StatBuilder {
         return this;
     }
 
+    /**
+     * Builds the specified stats into a
+     * {@link StatList}.
+     *
+     * @return stats
+     */
     public StatList build(){
         return stats;
+    }
+
+    /**
+     * Returns a {@link StatList} from an
+     * item('s lore).
+     *
+     * @param item item
+     * @return     stats
+     */
+    public static StatList fromLore(ItemStack item){
+        StatList stats = new StatList();
+        if(item != null){
+            if(item.getItemMeta() != null){
+                if(item.getItemMeta().getLore() != null){
+                    for(String line : item.getItemMeta().getLore()){
+                        stats.add(new Stat(line));
+                    }
+                }
+            }
+        }
+        return stats;
+    }
+
+    /**
+     * Returns a {@link ArrayList<String>} of lore when
+     * given stats, rarity, and item description.
+     * <p>
+     * Leave description blank ("") for no description.
+     *
+     * @param stats       item stats
+     * @param rarity      item rarity
+     * @param description item description
+     * @return            item lore
+     */
+    public static ArrayList<String> toLore(StatList stats, Rarity rarity, String description){
+        ArrayList<String> lore = new ArrayList<>();
+        ArrayList<String> damageStats = new ArrayList<>();
+        for(Stat stat : stats.getDamage()){
+            if(stat.getChance() != 100) {
+                damageStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " §8(" + stat.getChanceString() + "%)");
+            }
+            else{
+                damageStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString());
+            }
+        }
+        ArrayList<String> defenseStats = new ArrayList<>();
+        for(Stat stat : stats.getDefense()){
+            if(stat.getChance() != 100) {
+                defenseStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " §8(" + stat.getChanceString() + "%)");
+            }
+            else{
+                defenseStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString());
+            }
+        }
+        ArrayList<String> skillStats = new ArrayList<>();
+        for(Stat stat : stats.getStats()){
+            if(stat.getValue() != 0) {
+                skillStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString());
+            }
+        }
+        ArrayList<String> requirementStats = new ArrayList<>();
+        for(Stat stat : stats.getRequirements()){
+            if(stat.getValue() != 0) {
+                requirementStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": " + stat.getValueString());
+            }
+        }
+        if(!damageStats.isEmpty()){
+            lore.add(" ");
+            lore.addAll(damageStats);
+        }
+        if(!defenseStats.isEmpty()){
+            lore.add(" ");
+            lore.addAll(defenseStats);
+        }
+        if(!skillStats.isEmpty()){
+            lore.add(" ");
+            lore.addAll(skillStats);
+        }
+        if(!description.equals("")){
+            lore.add(" ");
+            int MAX_CHARS = 30;
+            StringTokenizer tok = new StringTokenizer(description, " ");
+            StringBuilder output = new StringBuilder(description.length());
+            int lineLen = 0;
+            while (tok.hasMoreTokens()) {
+                String word = tok.nextToken();
+
+                while(word.length() > MAX_CHARS){
+                    output.append(word.substring(0, MAX_CHARS-lineLen) + "\n");
+                    word = word.substring(MAX_CHARS-lineLen);
+                    lineLen = 0;
+                }
+
+                if (lineLen + word.length() > MAX_CHARS) {
+                    output.append("\n");
+                    lineLen = 0;
+                }
+                output.append(word + " ");
+
+                lineLen += word.length() + 1;
+            }
+            for(String line : output.toString().split("\n")){
+                lore.add("§8" + line);
+            }
+        }
+        if(!requirementStats.isEmpty()){
+            lore.add(" ");
+            lore.addAll(requirementStats);
+        }
+        lore.add(" ");
+        lore.add("§" + Stat.getRarityFormatting(rarity) + "§l" + rarity);
+        return lore;
+    }
+
+    /**
+     * Takes a set of item parameters and returns
+     * an {@link ItemStack} with RPG formatted lore.
+     *
+     * @param name        item name
+     * @param material    item material
+     * @param stats       item stats
+     * @param rarity      item rarity
+     * @param description item description
+     * @return            formatted item
+     */
+    public static ItemStack toItem(String name, Material material, StatList stats, Rarity rarity, String description){
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = Bukkit.getItemFactory().getItemMeta(material);
+        meta.setDisplayName("§" + Stat.getRarityFormatting(rarity) + name);
+        meta.setLore(toLore(stats, rarity, description));
+        meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+        meta.addItemFlags(ItemFlag.HIDE_DYE);
+        item.setItemMeta(meta);
+        return item;
     }
 
 }

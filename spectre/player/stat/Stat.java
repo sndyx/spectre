@@ -2,6 +2,8 @@ package com.sndy.spectre.player.stat;
 
 import org.bukkit.inventory.ItemStack;
 
+import java.text.DecimalFormat;
+
 public class Stat {
 
     private StatType type;
@@ -123,6 +125,14 @@ public class Stat {
         this.chance = chance;
     }
 
+    public String getValueString(){
+        return new DecimalFormat("#.#######").format(value);
+    }
+
+    public String getChanceString(){
+        return new DecimalFormat("#.#######").format(value);
+    }
+
     public void merge(Stat stat){
         if(type == stat.getType()){
             value += stat.getValue();
@@ -142,17 +152,82 @@ public class Stat {
         }
     }
 
-    public static StatList parseItem(ItemStack item){
-        StatList stats = new StatList();
-        if(item != null){
-            if(item.getItemMeta() != null){
-                if(item.getItemMeta().getLore() != null){
-                    for(String line : item.getItemMeta().getLore()){
-                        stats.add(new Stat(line));
-                    }
-                }
-            }
+    /**
+     * Returns a formatted stat name for a given
+     * {@link StatType}.
+     *
+     * @param type stat type
+     * @return     formatted stat name
+     */
+    public static String getFormattedName(StatType type){
+        switch(type) {
+            case DAMAGE_ALL:
+                return "Damage";
+            case DAMAGE_FLAME:
+                return "Flame-Damage";
+            case DAMAGE_FROST:
+                return "Frost-Damage";
+            case DAMAGE_BLEED:
+                return "Bleed-Damage";
+            case DAMAGE_STEAL:
+                return "Lifesteal";
+            case DAMAGE_ULTIMATE:
+                return "Ultimate-Damage";
+            case DEFENSE_ALL:
+                return "Defense";
+            case DEFENSE_FIRE:
+                return "Fire-Defense";
+            case DEFENSE_ICE:
+                return "Ice-Defense";
+            case DEFENSE_BLEED:
+                return "Bleed-Defense";
+            case DEFENSE_GILDED:
+                return "Gilded-Defense";
+            case DEFENSE_ULTIMATE:
+                return "Ultimate-Defense";
+            case SKILL_STRENGTH:
+                return "Strength";
+            case SKILL_WISDOM:
+                return "Wisdom";
+            case SKILL_AGILITY:
+                return "Agility";
+            case STAT_HEALTH:
+                return "Health";
+            case STAT_MANA:
+                return "Mana";
+            case REQUIREMENT_STRENGTH:
+                return "Strength-Min";
+            case REQUIREMENT_WISDOM:
+                return "Wisdom-Min";
+            case REQUIREMENT_AGILITY:
+                return "Agility-Min";
+            default:
+                return "";
         }
-        return stats;
+    }
+
+    /**
+     * Returns the color code formatting index
+     * for a given {@link Rarity}.
+     *
+     * @param rarity rarity
+     * @return       color formatting code
+     */
+    public static String getRarityFormatting(Rarity rarity){
+        switch(rarity){
+            default:
+            case COMMON:
+                return "a";
+            case UNCOMMON:
+                return "e";
+            case RARE:
+                return "6";
+            case EPIC:
+                return "c";
+            case LEGENDARY:
+                return "d";
+            case MYTHICAL:
+                return "b";
+        }
     }
 }

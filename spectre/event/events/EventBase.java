@@ -7,8 +7,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class EventBase {
 
@@ -52,46 +50,39 @@ public class EventBase {
      * @param r   Radius
      */
     public void spawnParticleHelix(Particle particle, Location loc, double r, int d) {
-        Runnable run = new Runnable() {
-            double radius = r;
-            int delay = d;
-            @Override
-            public void run() {
-                for (double y = 5; y >= 0; y -= 0.05) {
-                    radius = y / 3;
-                    double x = radius * Math.cos(3 * y);
-                    double z = radius * Math.sin(3 * y);
+        double radius = r;
+        int delay = d;
+        for (double y = 5; y >= 0; y -= 0.05) {
+            radius = y / 3;
+            double x = radius * Math.cos(3 * y);
+            double z = radius * Math.sin(3 * y);
 
-                    double y2 = 5 - y;
+            double y2 = 5 - y;
 
-                    Location loc2 = new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y2, loc.getZ() + z);
-                    player.getWorld().spawnParticle(particle, loc2, 0, 0, 0, 0, 1);
-                    try {
-                        Thread.sleep(delay);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                for (double y = 5; y >= 0; y -= 0.05) {
-                    radius = y / 3;
-                    double x = -(radius * Math.cos(3 * y));
-                    double z = -(radius * Math.sin(3 * y));
-
-                    double y2 = 5 - y;
-
-                    Location loc2 = new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y2, loc.getZ() + z);
-                    player.getWorld().spawnParticle(particle, loc2, 0, 0, 0, 0, 1);
-                    try {
-                        Thread.sleep(delay);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+            Location loc2 = new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y2, loc.getZ() + z);
+            player.getWorld().spawnParticle(particle, loc2, 0, 0, 0, 0, 1);
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        };
-        ExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.execute(run);
+        }
+
+        for (double y = 5; y >= 0; y -= 0.05) {
+            radius = y / 3;
+            double x = -(radius * Math.cos(3 * y));
+            double z = -(radius * Math.sin(3 * y));
+
+            double y2 = 5 - y;
+
+            Location loc2 = new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y2, loc.getZ() + z);
+            player.getWorld().spawnParticle(particle, loc2, 0, 0, 0, 0, 1);
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -105,29 +96,22 @@ public class EventBase {
      * @param r        Radius
      */
 
-    public void spawnParticleSphere(Particle particle, Location l, double r, int delay){
-        Runnable run = new Runnable() {
-            @Override
-            public void run() {
-                for (double phi = 0; phi <= Math.PI; phi += Math.PI / 15) {
-                    double y = r * Math.cos(phi) + 1.5;
-                    for (double theta = 0; theta <= 2 * Math.PI; theta += Math.PI / 30) {
-                        double x = r * Math.cos(theta) * Math.sin(phi);
-                        double z = r * Math.sin(theta) * Math.sin(phi);
-                        l.add(x, y, z);
-                        Objects.requireNonNull(l.getWorld()).spawnParticle(particle, l, 1, 0F, 0F, 0F, 0.001);
-                        l.subtract(x, y, z);
-                        try {
-                            Thread.sleep(delay);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+    public void spawnParticleSphere(Particle particle, Location l, double r, int delay) {
+        for (double phi = 0; phi <= Math.PI; phi += Math.PI / 15) {
+            double y = r * Math.cos(phi) + 1.5;
+            for (double theta = 0; theta <= 2 * Math.PI; theta += Math.PI / 30) {
+                double x = r * Math.cos(theta) * Math.sin(phi);
+                double z = r * Math.sin(theta) * Math.sin(phi);
+                l.add(x, y, z);
+                Objects.requireNonNull(l.getWorld()).spawnParticle(particle, l, 1, 0F, 0F, 0F, 0.001);
+                l.subtract(x, y, z);
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        };
-        ExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.execute(run);
+        }
     }
 
     /**

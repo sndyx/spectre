@@ -49,6 +49,10 @@ public final class Spectre extends JavaPlugin implements Listener {
                 new Set(
                         new Set.Sword("Thunder Staff")),
                 new SetThunderStaff(this));
+        EventManager.Events.register(
+                new Set(
+                        new Set.Sword("debug")),
+                new SetDebugStick());
     }
 
     public void registerMobs(){

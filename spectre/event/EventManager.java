@@ -109,7 +109,7 @@ public class EventManager implements Listener {
      */
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) throws InvocationTargetException, IllegalAccessException {
-        if(invokeEvent(new DropEvent(event.getPlayer(), new Set(new Set.Sword(event.getItemDrop().getCustomName()))), DropEvent.class)){
+        if(invokeEvent(new DropEvent(event.getPlayer(), new Set(new Set.Sword(Objects.requireNonNull(event.getItemDrop().getItemStack().getItemMeta()).getDisplayName()))), DropEvent.class)){
             event.setCancelled(true);
         }
     }
