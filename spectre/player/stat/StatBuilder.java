@@ -153,7 +153,7 @@ public class StatBuilder {
         }
         if(!description.equals("")){
             lore.add(" ");
-            int MAX_CHARS = 30;
+            final int MAX_CHARS = 30;
             StringTokenizer tok = new StringTokenizer(description, " ");
             StringBuilder output = new StringBuilder(description.length());
             int lineLen = 0;
