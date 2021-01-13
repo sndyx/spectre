@@ -9,6 +9,8 @@ public class Stat {
     private StatType type;
     private float value;
     private float chance;
+    private boolean blessed = false;
+    private int blessingValue = 0;
 
     public Stat(StatType type){
         this.type = type;
@@ -17,7 +19,7 @@ public class Stat {
     }
 
     public Stat(String line){
-        line = line.replaceAll("§.", "");
+        line = line.replaceAll("§.|Ⅰ|Ⅱ|Ⅲ|Ⅳ|Ⅴ|Ⅵ|Ⅶ|Ⅷ|Ⅸ|Ⅼ", "").trim();
         try {
             if (line.contains(" ")) {
                 String[] args = line.split(" ");
@@ -110,11 +112,15 @@ public class Stat {
     }
 
     public float getValue(){
-        return value;
+        return value * (blessingValue * 0.01 + 1);
     }
 
     public float getChance(){
-        return chance;
+        float fixedChance = chance * (blessingValue * 0.005 + 1);
+        if(fixedChance > 100){
+            return 100;
+        }
+        return fixedChance;
     }
 
     public void setValue(float value){
@@ -131,6 +137,20 @@ public class Stat {
 
     public String getChanceString(){
         return new DecimalFormat("#.#######").format(value);
+    }
+    
+    public void bless(int seed, BlessingLevel level){
+        blessed = true;
+        Random random = new Random();
+        if(level == BlessingLevel.LOW){
+            blessingValue = (random.nextInt(5) + 1) * seed;
+        }
+        if(level == BlessingLevel.MEDIUM){
+            blessingValue = (random.nextInt(4) + 2) * seed;
+        }
+        if(level == BlessingLevel.HIGH){
+            blessingValue = (random.nextInt(3) + 3) * seed;
+        }
     }
 
     public void merge(Stat stat){
@@ -247,5 +267,13 @@ public class Stat {
             case "b":
                 return Rarity.MYTHICAL;
         }
+    }
+    
+    public String getBlessingSymbol(){
+        if(blessed){
+            String chars = "ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅬ";
+            return String.valueOf(chars.charAt(blessingValue / 10));
+        }
+        return "";
     }
 }
