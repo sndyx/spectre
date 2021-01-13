@@ -28,9 +28,9 @@ public class EventManager implements Listener {
      * When given a class type, attempts to locate a class within
      * HashMap "registered" that has the key of the item stored within
      * Object "c". When successful, it scans all methods within the
-     * class and attempts to locate ones with the annotation @ItemEvent.
-     * All methods with annotation @ItemEvent are further narrowed down
-     * to only methods containing parameter c(class). If it finds any,
+     * class and attempts to locate ones with the extending {@link SetBase}.
+     * All methods extending superclass {@link SetBase} are further narrowed
+     * down t only methods containing parameter c(class). If it finds any,
      * it invokes said class (firing the event) and then checks if the
      * event is cancelled. If so, returns false. otherwise, always true.
      *
