@@ -230,4 +230,22 @@ public class Stat {
                 return "b";
         }
     }
+
+    public static Rarity getFormattingRarity(String formatting){
+        switch(formatting){
+            default:
+            case "a":
+                return Rarity.COMMON;
+            case "e":
+                return Rarity.UNCOMMON;
+            case "6":
+                return Rarity.RARE;
+            case "c":
+                return Rarity.EPIC;
+            case "d":
+                return Rarity.LEGENDARY;
+            case "b":
+                return Rarity.MYTHICAL;
+        }
+    }
 }
