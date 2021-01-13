@@ -111,19 +111,19 @@ public class StatBuilder {
         ArrayList<String> damageStats = new ArrayList<>();
         for(Stat stat : stats.getDamage()){
             if(stat.getChance() != 100) {
-                damageStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " §8(" + stat.getChanceString() + "%)");
+                damageStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " §8(" + stat.getChanceString() + "%) " + stat.getBlessingSymbol());
             }
             else{
-                damageStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString());
+                damageStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " " + stat.getBlessingSymbol());
             }
         }
         ArrayList<String> defenseStats = new ArrayList<>();
         for(Stat stat : stats.getDefense()){
             if(stat.getChance() != 100) {
-                defenseStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " §8(" + stat.getChanceString() + "%)");
+                defenseStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " §8(" + stat.getChanceString() + "%) " + stat.getBlessingSymbol());
             }
             else{
-                defenseStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString());
+                defenseStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " " + stat.getBlessingSymbol());
             }
         }
         ArrayList<String> skillStats = new ArrayList<>();
