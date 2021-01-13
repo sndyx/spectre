@@ -139,6 +139,14 @@ public class Stat {
         return new DecimalFormat("#.#######").format(value);
     }
     
+    public boolean isBlessed(){
+        return blessed;
+    }
+    
+    public int getBlessingValue(){
+        return blessingValue;
+    }
+    
     public void bless(int seed, BlessingLevel level){
         blessed = true;
         Random random = new Random();
