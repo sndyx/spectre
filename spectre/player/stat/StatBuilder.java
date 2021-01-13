@@ -107,6 +107,7 @@ public class StatBuilder {
      * @return            item lore
      */
     public static ArrayList<String> toLore(StatList stats, Rarity rarity, String description){
+        boolean blessed = false;
         ArrayList<String> lore = new ArrayList<>();
         ArrayList<String> damageStats = new ArrayList<>();
         for(Stat stat : stats.getDamage()){
