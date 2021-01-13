@@ -107,24 +107,24 @@ public class StatBuilder {
      * @return            item lore
      */
     public static ArrayList<String> toLore(StatList stats, Rarity rarity, String description){
-        boolean blessed = false;
+        float blessingPercentage = 0;
         ArrayList<String> lore = new ArrayList<>();
         ArrayList<String> damageStats = new ArrayList<>();
         for(Stat stat : stats.getDamage()){
             if(stat.getChance() != 100) {
-                damageStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " §8(" + stat.getChanceString() + "%) " + stat.getBlessingSymbol());
+                damageStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " §8(" + stat.getChanceString() + "%) " + getFormattedBlessing(stat.getBlessingValue()));
             }
             else{
-                damageStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " " + stat.getBlessingSymbol());
+                damageStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " " + getFormattedBlessing(stat.getBlessingValue()));
             }
         }
         ArrayList<String> defenseStats = new ArrayList<>();
         for(Stat stat : stats.getDefense()){
             if(stat.getChance() != 100) {
-                defenseStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " §8(" + stat.getChanceString() + "%) " + stat.getBlessingSymbol());
+                defenseStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " §8(" + stat.getChanceString() + "%) " + getFormattedBlessing(stat.getBlessingValue()));
             }
             else{
-                defenseStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " " + stat.getBlessingSymbol());
+                defenseStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": §" + Stat.getRarityFormatting(rarity) + "+" + stat.getValueString() + " " + getFormattedBlessing(stat.getBlessingValue()));
             }
         }
         ArrayList<String> skillStats = new ArrayList<>();
@@ -136,7 +136,7 @@ public class StatBuilder {
         ArrayList<String> requirementStats = new ArrayList<>();
         for(Stat stat : stats.getRequirements()){
             if(stat.getValue() != 0) {
-                requirementStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": " + stat.getValueString());
+                requirementStats.add("§f" + Stat.getFormattedName(stat.getType()) + ": " + stat);
             }
         }
         if(!damageStats.isEmpty()){
@@ -182,8 +182,16 @@ public class StatBuilder {
             lore.add(" ");
             lore.addAll(requirementStats);
         }
+        damageStats.addAll(defenseStats());
+        int stats = 0;
+        for(Stat stat : damageStats){
+            if(stat.isBlessed()){
+                stats++;
+                blessingPercentage += stat.getBlessingValue();
+            }
+        }
         lore.add(" ");
-        lore.add("§" + Stat.getRarityFormatting(rarity) + "§l" + rarity);
+        lore.add("§" + Stat.getRarityFormatting(rarity) + "§l" + rarity + "§8(" + (blessingPercentage / stats) + ") " + getFormattedBlessing(blessingPercentage / stats));
         return lore;
     }
 
@@ -210,6 +218,17 @@ public class StatBuilder {
         meta.addItemFlags(ItemFlag.HIDE_DYE);
         item.setItemMeta(meta);
         return item;
+    }
+    
+    public String getFormattedBlessing(int blessingPercentage){
+        if(blessingPercentage != 0){
+            String chars = "ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅬ";
+            if(blessingPercentage / 10 == 10){
+                return "§6" + String.valueOf(chars.charAt(blessingValue / 10));
+            }
+            return "§8" + String.valueOf(chars.charAt(blessingValue / 10));
+        }
+        return "";
     }
 
 }
