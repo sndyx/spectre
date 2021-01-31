@@ -1,0 +1,19 @@
+name: Spectre
+version: ${project.version}
+main: dev.sndy.spectre.Spectre
+api-version: 1.16
+prefix: Spectre
+load: STARTUP
+authors: [ Sndy ]
+description: RPG Core
+commands:
+  items:
+    description: Directory of items.
+  setrank:
+    description: Sets a player's rank.
+  profile:
+    description: Switch profiles.
+  profiles:
+    description: Shows profiles.
+  addexperience:
+    description: Adds experience to the specified player.
